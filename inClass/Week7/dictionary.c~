@@ -1,0 +1,15 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+int main()
+{
+  char* inp;
+  int n;
+  inp = (char* )malloc(512 * sizeof(char));
+  fgets(inp, 512, stdin);
+  n = strlen(inp);
+  inp[n - 1] = '\0';
+  printf("%s %d %c", inp, n, inp[6]);
+}

@@ -1,0 +1,171 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 1000
+#define N 8
+
+int T[MAX][MAX];
+int n, startI, startJ;
+
+//queue
+// A linked list (LL) node to store a queue entry 
+struct QNode 
+{ 
+  int i;
+  int j;
+  struct QNode* next; 
+}; 
+  
+// The queue, front stores the front node of LL and rear stores ths 
+// last node of LL 
+struct Queue 
+{ 
+  struct QNode* front, * rear; 
+}; 
+  
+// A utility function to create a new linked list node. 
+struct QNode* newNode(int x, int y) 
+{ 
+  struct QNode* temp = (struct QNode* )malloc(sizeof(struct QNode)); 
+  temp->i = x;
+  temp->j = y;
+  temp->next = NULL; 
+  return temp;  
+} 
+  
+// A utility function to create an empty queue 
+struct Queue* createQueue() 
+{ 
+  struct Queue* q = (struct Queue* )malloc(sizeof(struct Queue)); 
+  q->front = q->rear = NULL; 
+  return q; 
+}
+
+int isEmpty(struct Queue* q)
+{
+  return ((q->front == NULL) && (q->rear == NULL));
+}
+
+// The function to add a x, y to q 
+void enQueue(struct Queue* q, int x, int y) 
+{ 
+  // Create a new LL node 
+  struct QNode* temp = newNode(x, y); 
+  
+  // If queue is empty, then new node is front and rear both 
+  if (q->rear == NULL) 
+    { 
+      q->front = q->rear = temp; 
+      return; 
+    } 
+  
+  // Add the new node at the end of queue and change rear 
+  q->rear->next = temp; 
+  q->rear = temp; 
+} 
+  
+// Function to remove a key from given queue q 
+struct QNode* deQueue(struct Queue* q) 
+{ 
+  // If queue is empty, return NULL. 
+  if (q->front == NULL) 
+    return NULL; 
+  
+  // Store previous front and move front one node ahead 
+  struct QNode* temp = q->front; 
+  q->front = q->front->next; 
+  
+  // If front becomes NULL, then change rear also as NULL 
+  if (q->front == NULL) 
+    q->rear = NULL; 
+  return temp; 
+}
+
+struct Queue* path;
+void init()
+{
+  scanf("%d %d %d", &n, &startI, &startJ);
+  int i, j;
+  
+  for (i = 0; i < MAX; i++)
+    {
+      for (j = 0; j < MAX; j ++)
+	{
+	  if ((i == startI - 1) && (j == startJ - 1))
+	    T[i][j] = 1;
+	  else if ((i < n) && (j < n))
+	    T[i][j] = -1;
+	  else
+	    T[i][j] = n * n + 1;
+	}
+    }
+}
+
+int isSafe(int x, int y, int sol[MAX][MAX]) 
+{ 
+    return ( x >= 0 && x < n && y >= 0 && 
+             y < n && sol[x][y] == 0); 
+} 
+
+int run(int x, int y, int move, int T[MAX][MAX], int xMove[N], int yMove[N]);
+int solve()
+{
+  int xMove[8] = {2, 1, -1, -2, -2, -1,  1,  2}; 
+  int yMove[8] = {1, 2,  2,  1, -1, -2, -2, -1};
+  struct QNode* tmp1;
+  if (run(startI - 1, startJ - 1, 0, T, xMove, yMove) == 0)
+    {
+      printf("Cannot go!\n");
+      return 0;
+    }
+  else
+    {
+      while (path->front != NULL)
+	{
+	  tmp1 = deQueue(path);
+	  printf("(%d, %d); ", tmp1->i, tmp1->j);
+	}
+      printf("\n");
+      return 1;
+    }
+}
+
+int run(int x, int y, int move, int T[MAX][MAX], int xMove[N], int yMove[N])
+{
+  int k, nextI, nextJ;
+  
+  struct QNode* tmp;
+  struct QNode* temp;
+  if (move == n * n)
+    return 1;
+
+  for (k = 0; k < N; k ++)
+    {
+      nextI = x - xMove[k];
+      nextJ = y - yMove[k];
+
+      if (isSafe(nextI, nextJ, T))
+	{
+	  T[nextI][nextJ] = 1;
+	  enQueue(path, nextI + 1, nextJ + 1);
+	  for(tmp = path->front; tmp->next = path->rear; tmp = tmp->next);
+	  if (run(nextI, nextJ, move + 1, T, xMove, yMove) == 1)
+	    return 1;
+	  else
+	    {
+	      T[nextI][nextJ] = 0;
+	      temp = path->rear;
+	      path->rear = tmp;
+	      path->rear->next = NULL;
+	    }
+	}
+    }
+  return 0;
+}
+int main()
+{
+  init();
+  int out;
+  out = solve();
+  return 0;
+}

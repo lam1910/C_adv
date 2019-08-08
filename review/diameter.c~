@@ -1,0 +1,69 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 1000007
+
+int n,m;
+int **check = NULL;
+int **a = NULL;
+int *d = NULL; // from 1 to n => max n+1
+int *visit = NULL;
+int init();
+int getinp();
+int dijkstra(int v, int end);
+
+int main()
+{
+    int i,j,k,max;
+    getinp();
+    max = -1;
+
+    for (i = 1; i <= n; i ++)
+	{
+        for (j = 1; j <= n; j++){
+            for (k = 1; k <= n; k ++){
+                if(check[i][j] != MAX && check[j][k] != MAX){
+                    if(check[i][k] > check[i][j] + check[j][k]){
+                        check[i][k] = check[i][j] + check[j][k];
+                        check[k][i] = check[i][k];
+                    }
+                }
+            }
+        }
+    }
+    for(i=1;i<=n;i++){
+        for(j=1;j<=n;j++){
+            if(check[i][j]>max)
+                max = check[i][j];
+        }
+    }
+    fprintf(stdout,"%i\n",max);
+}
+
+int getinp(){
+    int i,j,u,v;
+    fscanf(stdin,"%i %i",&n,&m);
+    check = (int**)malloc(sizeof(int*) * (n+1));
+    a = (int**)malloc(sizeof(int*) * (n+1));
+    for(i=0; i<=n; i++){
+        a[i] = (int*)malloc(sizeof(int) * (n+1));
+        check[i] = (int*)malloc(sizeof(int) * (n+1));
+    }
+    for(i=0; i<=n; i++){
+        for(j=0; j<=n; j++){
+            if(i != j){
+                a[i][j] = MAX;
+                check[i][j] = MAX;
+            }else{
+                a[i][j] = 0;
+                check[i][j] = 0;
+            }
+        }
+    }
+    for(i=0; i<m; i++){
+        fscanf(stdin,"%i %i",&u,&v);
+        check[u][v] = 1;
+        check[v][u] = 1;
+        a[u][v] = 1;
+        a[v][u] = 1;
+    }
+}

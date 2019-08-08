@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 4000
+
+int n, m, result;
+
+//adjacent list
+int z[MAX + 1];
+
+//adjacent matrix;
+int A[MAX + 1][MAX + 1];
+
+
+void init()
+{
+  int i, j, u, v;
+  for (i = 0; i <= MAX; i++)
+    for(j = 0; j <= MAX; j ++)
+      A[i][j] = 0;
+  scanf("%d%*c%d\n", &n, &m);
+  for (i = 0; i < m; i ++)
+    {
+      scanf("%d%*c%d%*c", &u, &v);
+      z[u] ++;
+      A[u][z[u]] = v;
+      z[v] ++;
+      A[v][z[v]] = u;
+    }
+}
+
+void solve()
+{
+  int x, y ,z, i, j;
+  for (x = 1; x <= n; i ++)
+    {
+      for (i = 1; i <= z[x]; i ++)
+	{
+	  y = A[x][i];
+	  for (j = 1; j <= z[y]; j ++)
+	    {
+	      z = A[y][j];
+	      if (A[x][z] = 1)
+		result ++;
+	      //else
+	      //continue;
+	    }
+	}
+    }
+  printf("%d\n", result);
+}

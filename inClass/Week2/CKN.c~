@@ -1,0 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+  int k, n;
+  printf("Enter k, n: ");
+  scanf("%d%*c%d", &k, &n);
+  return 0;
+}

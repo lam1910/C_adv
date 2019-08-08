@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 1000
+
+int n, m; //n: number of nodes, m, number of vectors
+
+//list of numbers of next nodes;
+int z[MAX];
+
+//list of next nodes
+int A[MAX][MAX];
+
+//list pf cost
+int d[MAX][MAX];
+
+void init()
+{
+  int i, j;
+  for (i = 0; i < MAX; i ++)
+    {
+      z[i] = 0;
+      for (j = 0; j < MAX; j ++)
+	d[i][j] = -1;
+    }
+}
+
+void input()
+{
+  int i;
+  fscanf(stdin, "%d %d\n", &n, &m);
+  for (i = 0; i < m; i ++)
+    {
+      int u, v, k;
+      fcansf(stdin, "%d %d %d\n", &u, &v, &k);
+      z[u] ++;
+      z[u - 1][z[u] - 1] = v;
+      d[u - 1][v - 1] = k;
+    }
+  fclose(fptr);
+}
+
+//utility function to see the graph
+void printGraph()
+{
+  int v;
+  for (v = 1; v <= n; v ++)
+    {
+      printf("A[%d] = ", v);
+      int i;
+      for (i = 0; i < z[v]; i ++)
+	{
+	  printf("%d-%d ", A[v - 1][i], d[v - 1][A[v - 1][i]]);
+	}
+      printf("\n");
+    }
+}

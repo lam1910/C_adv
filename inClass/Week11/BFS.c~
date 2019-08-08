@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "queueL.h"
+
+#define filename "graph.txt"
+#define MAX 1000
+
+//adjacent list
+int z[MAX];
+
+//adjacent matrix;
+int A[MAX][MAX];
+
+//number of element
+int n;
+
+//indicator of whether visited or not (w means not, g means it's visited, b means done)
+char colour[MAX];
+
+//built a graph through adjacent matrix 
+void input()
+{
+  FILE* fptr;
+  fptr = fopen(filename, "r+");
+  int m, i;
+  fscanf(fptr, "%d %d\n", &n, &m);
+  for (i = 0; i < n; i ++)
+    z[i] = 0;
+  for (i = 0; i < m; i ++)
+    {
+      int u, v;
+      fscanf(fptr, "%d %d\n", &u, &v);
+      z[u] ++;
+      A[u - 1][z[u] - 1] = v;
+      z[v] ++;
+      A[v - 1][z[v] - 1] = u;
+    }
+  fclose(fptr);
+}
+
+//init colour of node
+void init()
+{
+  int i;
+  for (i = 0; i < n; i ++)
+    colour[i] = 'w';
+}
+
+//utility function to see the graph
+void printGraph()
+{
+  int v;
+  for (v = 1; v <= n; v ++)
+    {
+      printf("A[%d] = ", v);
+      int i;
+      for (i = 0; i < z[v]; i ++)
+	{
+	  printf("%d ", A[v - 1][i]);
+	}
+      printf("\n");
+    }
+}
+
+//breadth-first search from s to v
+void BFS(int s, int v)
+{
+  colour[u] = 'g';
+  
+}
+
+int main()
+{
+  input();
+  init();
+  printGraph();
+  return 0;
+}

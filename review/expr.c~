@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define N 1000000007
+
+int n, b;
+int* arr;
+
+//(x + y) mod P
+int addMod(int x, int y, int P)
+{
+  x = x % P;
+  y = y % P;
+  int tmp = P - x;
+  if (tmp > y)
+    return (x + y);
+  else
+    return (y - tmp);
+}
+
+
+void init()
+{
+  scanf("%d %d%*c", &n, &b);
+  arr = (int *)malloc(n * sizeof(int));
+  int i;
+  for (i = 0; i < n; i ++)
+    {
+      scanf("%d%*c", arr + i);
+    }
+}

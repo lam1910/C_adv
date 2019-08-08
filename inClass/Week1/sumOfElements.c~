@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+
+int main()
+{
+  FILE* fptr;
+  fptr = fopen("sequence.txt", " r+");
+  if (fptr ==  NULL)
+    {
+      printf("Cannot open sequence.txt! Exit!");
+      exit(1);     
+    }
+  else
+    {
+      int n, i;
+      int* list;
+      fscanf(fptr, "%d%*c", &n);
+      list = (int* )malloc(n * sizeof(int));
+      for (i = 0; i < n; i ++)
+	{
+	  fscanf(fptr, "%d%*c", list[i]);
+	}
+      for (i = 0; i < n; i ++)
+	{
+	  printf("%d", list[i]);
+	}
+     
+    }
+  fclose(fptr);
+  return 0;
+}
